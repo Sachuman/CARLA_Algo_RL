@@ -1,4 +1,4 @@
-from stable_baselines3 import DQN #PPO
+from stable_baselines3 import PPO #PPO
 from typing import Callable
 import os
 from carenv import CarEnv
@@ -24,8 +24,18 @@ env = CarEnv()
 
 env.reset(seed=None)
 print('Env has been reset as part of launch')
-model = DQN('MlpPolicy', env, verbose=1,learning_rate=0.001, tensorboard_log=logdir)
-
+model = PPO(
+    'CnnPolicy',  
+    env,
+    verbose=1,
+    learning_rate=1e-4,  
+    gamma=0.99, 
+    n_steps=2048, 
+    gae_lambda=0.95,  
+    ent_coef=0.01, 
+    vf_coef=0.5,  
+    tensorboard_log=logdir
+)
 TIMESTEPS = 500_000 # how long is each training iteration - individual steps
 
 for iters in range(8):
